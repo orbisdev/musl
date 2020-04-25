@@ -221,7 +221,7 @@ trap 'rm "$tmpc"' EXIT INT QUIT TERM HUP
 test "$target" && \
 test "$target" != "$build" && \
 test -z "$CROSS_COMPILE" && \
-text "$target" != "orbis" && \
+test "$target" != "orbis" && \
 CROSS_COMPILE="$target-"
 
 #
