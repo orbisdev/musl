@@ -3,6 +3,8 @@
 
 #include <errno.h>
 #include <stdio.h>
+#include "bits/syscall.h"
+#include "orbis/brk.h"
 
 #define __NR_NON_NATIVE 10000
 
@@ -13,6 +15,9 @@ static __inline long __orbis_syscall_interp(long n, long a1, long a2, long a3, l
 
     switch (n)
     {
+		SYS_BRK:
+			return __orbis_brk((void *)a1);
+		default:
             printf("musl: unhandled syscall called: %i\n", n);
     }
 
