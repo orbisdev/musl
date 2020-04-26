@@ -1,9 +1,10 @@
 #include <features.h>
 #include "libc.h"
+#define ORBIS
 
-#define START "_start"
+//#define START "_start"
 
-#include "crt_arch.h"
+//#include "crt_arch.h"
 
 int main();
 weak void _init();
@@ -11,9 +12,9 @@ weak void _fini();
 int __libc_start_main(int (*)(), int, char **,
 	void (*)(), void(*)(), void(*)());
 
-void _start_c(long *p)
+void _start_c(int argc,char *argv)
 {
-	int argc = p[0];
-	char **argv = (void *)(p+1);
+//	int argc = p[0];
+//	char **argv = (void *)(p+1);
 	__libc_start_main(main, argc, argv, _init, _fini, 0);
 }

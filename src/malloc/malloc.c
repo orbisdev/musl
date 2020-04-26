@@ -13,6 +13,7 @@
 #if defined(__GNUC__) && defined(__PIC__)
 #define inline inline __attribute__((always_inline))
 #endif
+#define ORBIS
 
 static struct {
 	volatile uint64_t binmap;
@@ -290,8 +291,13 @@ void *malloc(size_t n)
 
 	if (n > MMAP_THRESHOLD) {
 		size_t len = n + OVERHEAD + PAGE_SIZE - 1 & -PAGE_SIZE;
+		#ifdef ORBIS
+		char *base = __mmap(0, len, PROT_READ|PROT_WRITE,
+			MAP_PRIVATE|0x1000, -1, 0);
+		#else
 		char *base = __mmap(0, len, PROT_READ|PROT_WRITE,
 			MAP_PRIVATE|MAP_ANONYMOUS, -1, 0);
+		#endif
 		if (base == (void *)-1) return 0;
 		c = (void *)(base + SIZE_ALIGN - OVERHEAD);
 		c->csize = len - (SIZE_ALIGN - OVERHEAD);
@@ -386,7 +392,11 @@ void *realloc(void *p, size_t n)
 		size_t newlen = n + extra;
 		/* Crash on realloc of freed chunk */
 		if (extra & 1) a_crash();
+		#ifdef ORBIS
+		if (newlen < 1<<12  && (new = malloc(n-OVERHEAD))) {
+		#else
 		if (newlen < PAGE_SIZE && (new = malloc(n-OVERHEAD))) {
+		#endif
 			n0 = n;
 			goto copy_free_ret;
 		}

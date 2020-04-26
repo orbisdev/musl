@@ -8,6 +8,12 @@
 
 #define __NR_NON_NATIVE 10000
 
+#define ORBIS
+#ifdef ORBIS
+void debugNetPrintf(int level, char* format, ...);
+#endif
+
+
 static __inline long __orbis_syscall_interp(long n, long a1, long a2, long a3, long a4, long a5, long a6)
 {
     //if (n != SYS_poll && n != SYS_clock_gettime)
@@ -15,10 +21,14 @@ static __inline long __orbis_syscall_interp(long n, long a1, long a2, long a3, l
 
     switch (n)
     {
-		SYS_BRK:
-			return __orbis_brk((void *)a1);
-		default:
-            printf("musl: unhandled syscall called: %i\n", n);
+	case SYS_BRK:
+	 return __orbis_brk((void *)a1);
+	default:
+        #ifdef ORBIS
+	  debugNetPrintf(3, "[musl] unhandled syscall called: %i\n", n);
+	#else
+	  printf("musl: unhandled syscall called: %i\n", n);
+	#endif
     }
 
     return -ENOSYS;
@@ -27,6 +37,9 @@ static __inline long __orbis_syscall_interp(long n, long a1, long a2, long a3, l
 static __inline long __syscall0(long n)
 {
 	unsigned long ret;
+	#ifdef ORBIS
+	debugNetPrintf(3, "[musl] %s called: %i\n", __FUNCTION__, n);
+	#endif
 	if (n > __NR_NON_NATIVE) {
 		ret = __orbis_syscall_interp(n, 0, 0, 0, 0, 0, 0);
 	} else {
@@ -38,6 +51,9 @@ static __inline long __syscall0(long n)
 static __inline long __syscall1(long n, long a1)
 {
 	unsigned long ret;
+	#ifdef ORBIS
+	debugNetPrintf(3, "[musl] %s called: %i\n", __FUNCTION__, n);
+	#endif
 	if (n > __NR_NON_NATIVE) {
 		ret = __orbis_syscall_interp(n, a1, 0, 0, 0, 0, 0);
 	} else {
@@ -49,6 +65,9 @@ static __inline long __syscall1(long n, long a1)
 static __inline long __syscall2(long n, long a1, long a2)
 {
 	unsigned long ret;
+	#ifdef ORBIS
+	debugNetPrintf(3, "[musl] %s called: %i\n", __FUNCTION__, n);
+	#endif
 	if (n > __NR_NON_NATIVE) {
 		ret = __orbis_syscall_interp(n, a1, a2, 0, 0, 0, 0);
 	} else {
@@ -61,6 +80,9 @@ static __inline long __syscall2(long n, long a1, long a2)
 static __inline long __syscall3(long n, long a1, long a2, long a3)
 {
 	unsigned long ret;
+	#ifdef ORBIS
+	debugNetPrintf(3, "[musl] %s called: %i\n", __FUNCTION__, n);
+	#endif
 	if (n > __NR_NON_NATIVE) {
 		ret = __orbis_syscall_interp(n, a1, a2, a3, 0, 0, 0);
 	} else {
@@ -73,6 +95,9 @@ static __inline long __syscall3(long n, long a1, long a2, long a3)
 static __inline long __syscall4(long n, long a1, long a2, long a3, long a4)
 {
 	unsigned long ret;
+	#ifdef ORBIS
+	debugNetPrintf(3, "[musl] %s called: %i\n", __FUNCTION__, n);
+	#endif
 	if (n > __NR_NON_NATIVE) {
 		ret = __orbis_syscall_interp(n, a1, a2, a3, a4, 0, 0);
 	} else {		
@@ -86,6 +111,9 @@ static __inline long __syscall4(long n, long a1, long a2, long a3, long a4)
 static __inline long __syscall5(long n, long a1, long a2, long a3, long a4, long a5)
 {
 	unsigned long ret;
+	#ifdef ORBIS
+	debugNetPrintf(3, "[musl] %s called: %i\n", __FUNCTION__, n);
+	#endif
 	if (n > __NR_NON_NATIVE) {
 		ret = __orbis_syscall_interp(n, a1, a2, a3, a4, a5, 0);
 	} else {
@@ -100,6 +128,9 @@ static __inline long __syscall5(long n, long a1, long a2, long a3, long a4, long
 static __inline long __syscall6(long n, long a1, long a2, long a3, long a4, long a5, long a6)
 {
 	unsigned long ret;
+	#ifdef ORBIS
+	debugNetPrintf(3, "[musl] %s called: %i\n", __FUNCTION__, n);
+	#endif
 	if (n > __NR_NON_NATIVE) {
 		ret = __orbis_syscall_interp(n, a1, a2, a3, a4, a5, a6);
 	} else {
@@ -113,7 +144,7 @@ static __inline long __syscall6(long n, long a1, long a2, long a3, long a4, long
 }
 
 #define VDSO_USEFUL
-#define VDSO_CGT_SYM "__vdso_clock_gettime"
+//#define VDSO_CGT_SYM "__vdso_clock_gettime"
 #define VDSO_CGT_VER "LINUX_2.6"
 #define VDSO_GETCPU_SYM "__vdso_getcpu"
 #define VDSO_GETCPU_VER "LINUX_2.6"

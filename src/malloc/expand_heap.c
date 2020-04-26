@@ -5,6 +5,7 @@
 #include "libc.h"
 #include "syscall.h"
 #include "malloc_impl.h"
+#define ORBIS
 
 /* This function returns true if the interval [old,new]
  * intersects the 'len'-sized interval below &libc.auxv
@@ -62,8 +63,13 @@ void *__expand_heap(size_t *pn)
 
 	size_t min = (size_t)PAGE_SIZE << mmap_step/2;
 	if (n < min) n = min;
+	#ifdef ORBIS
+	void *area = __mmap(0, n, PROT_READ|PROT_WRITE,
+		MAP_PRIVATE|0x1000, -1, 0);
+	#else
 	void *area = __mmap(0, n, PROT_READ|PROT_WRITE,
 		MAP_PRIVATE|MAP_ANONYMOUS, -1, 0);
+	#endif
 	if (area == MAP_FAILED) return 0;
 	*pn = n;
 	mmap_step++;
