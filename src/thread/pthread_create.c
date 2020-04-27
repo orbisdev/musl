@@ -221,6 +221,7 @@ static void init_file_lock(FILE *f)
 
 int __pthread_create(pthread_t *restrict res, const pthread_attr_t *restrict attrp, void *(*entry)(void *), void *restrict arg)
 {
+	debugNetPrintf(3, "[musl] %s called\n", __FUNCTION__);
 	int ret, c11 = (attrp == __ATTRP_C11_THREAD);
 	size_t size, guard;
 	struct pthread *self, *new;
