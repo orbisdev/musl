@@ -21,7 +21,7 @@ static __inline long __orbis_syscall_interp(long n, long a1, long a2, long a3, l
 
     switch (n)
     {
-	case SYS_BRK:
+	case __NR_brk:
 	 return __orbis_brk((void *)a1);
 	default:
         #ifdef ORBIS
