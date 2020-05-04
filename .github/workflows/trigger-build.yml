@@ -27,3 +27,4 @@ jobs:
         repository: ${{ github.repository_owner }}/orbis-sysroot
         token: ${{ secrets.DISPATCH_TOKEN }}
         event-type: ${{ env.NEW_DISPATCH_ACTION }}
+        client-payload: '{"ref": "${{ github.ref }}", "sha": "${{ github.sha }}"}'
