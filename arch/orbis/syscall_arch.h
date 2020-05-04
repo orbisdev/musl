@@ -14,7 +14,7 @@ void debugNetPrintf(int level, char* format, ...);
 #endif
 
 
-static __inline long __orbis_syscall_interp(long n, long a1, long a2, long a3, long a4, long a5, long a6)
+static __inlines long __orbis_syscall_interp(long n, long a1, long a2, long a3, long a4, long a5, long a6)
 {
     //if (n != SYS_poll && n != SYS_clock_gettime)
     //    sceClibPrintf("musl: syscall called: %i: %s\n", n, __lookup_syscall_name(n));
