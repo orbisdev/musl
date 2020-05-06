@@ -35,7 +35,7 @@ struct in6_addr {
 #define s6_addr32 __in6_union.__s6_addr32
 
 struct sockaddr_in6 {
-#ifdef
+#ifdef ORBIS
 	uint8_t			sin6_len;	/* length of this struct */
 #endif
 	sa_family_t     sin6_family;
