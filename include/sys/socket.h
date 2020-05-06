@@ -364,12 +364,19 @@ struct linger {
 #define SCM_RIGHTS      0x01
 #define SCM_CREDENTIALS 0x02
 
+#define ORBIS
 struct sockaddr {
+#ifdef ORBIS
+	unsigned char	sa_len;		/* total length */
+#endif
 	sa_family_t sa_family;
 	char sa_data[14];
 };
 
 struct sockaddr_storage {
+#ifdef ORBIS
+	unsigned char	ss_len;		/* address length */
+#endif
 	sa_family_t ss_family;
 	char __ss_padding[128-sizeof(long)-sizeof(sa_family_t)];
 	unsigned long __ss_align;

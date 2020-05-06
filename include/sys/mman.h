@@ -13,7 +13,7 @@ extern "C" {
 #if defined(_GNU_SOURCE)
 #define __NEED_ssize_t
 #endif
-
+#define ORBIS
 #include <bits/alltypes.h>
 
 #define MAP_FAILED ((void *) -1)
@@ -23,7 +23,11 @@ extern "C" {
 #define MAP_SHARED_VALIDATE 0x03
 #define MAP_TYPE       0x0f
 #define MAP_FIXED      0x10
+#ifdef ORBIS
+#define MAP_ANON       0x1000
+#else
 #define MAP_ANON       0x20
+#endif
 #define MAP_ANONYMOUS  MAP_ANON
 #define MAP_NORESERVE  0x4000
 #define MAP_GROWSDOWN  0x0100

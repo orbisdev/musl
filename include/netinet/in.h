@@ -12,8 +12,11 @@ extern "C" {
 typedef uint16_t in_port_t;
 typedef uint32_t in_addr_t;
 struct in_addr { in_addr_t s_addr; };
-
+#define ORBIS
 struct sockaddr_in {
+#ifdef ORBIS
+	uint8_t	sin_len;
+#endif
 	sa_family_t sin_family;
 	in_port_t sin_port;
 	struct in_addr sin_addr;
@@ -32,6 +35,9 @@ struct in6_addr {
 #define s6_addr32 __in6_union.__s6_addr32
 
 struct sockaddr_in6 {
+#ifdef
+	uint8_t			sin6_len;	/* length of this struct */
+#endif
 	sa_family_t     sin6_family;
 	in_port_t       sin6_port;
 	uint32_t        sin6_flowinfo;
