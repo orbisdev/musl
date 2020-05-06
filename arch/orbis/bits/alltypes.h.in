@@ -19,4 +19,4 @@ TYPEDEF double double_t;
 
 TYPEDEF struct { long long __ll; long double __ld; } max_align_t;
 #undef sa_family_t
-TYPEDEF uint8_t sa_family_t;
+TYPEDEF unsigned char sa_family_t;
